@@ -39,4 +39,49 @@ public class RentalPriceCalculator {
 		}
 		return rentalPrice;
 	}
+	public boolean validAge(int age) {
+		if (age < 18) {
+			throw new IllegalArgumentException("Driver too young - cannot quote the price");
+		}
+		return true
+	}
+	
+	public boolean canDriveCar(int age, int carClass) {
+		if (carClass > 2) {
+			if (age <= 21) {
+				throw new UnsupportedOperationException("Drivers 21 y/o or less can only rent Class 1 vehicles");
+			}
+		} else {
+			return validAge(age);
+		}
+	}
+	public double calcRentalPrice(int age, int carClass, boolean isHighSeason, int licenseHoldingYears, boolean hasAccidents) {
+		double rentalPrice = age;
+		if (carClass >=4 && driverAge <= 25 && isHighSeason != false) {
+			return (rentalPrice * 1.5 * addRentalPriceAccordingToYears(licenseHoldingYears)) + RentalPriceAdditionAccordingAccidents(hasAccidents);	
+		}
+		
+		return (rentalPrice * addRentalPriceAccordingToYears(licenseHoldingYears)) + RentalPriceAdditionAccordingAccidents(hasAccidents);
+	}
+	
+	public double RentalPriceMultiplierAccordingToYears(int licenceHoldingYears) {
+		if (licenceHoldingYears < 3) {
+			return 1.3;
+		}
+		return 1.0;
+	}
+	
+	public double RentalPriceAdditionAccordingAccidents(boolean hasAccidents) {
+		if (hasAccidents) {
+			return 15;
+		}
+		return 0;
+	}
+	
+	public boolean isValidLicenceHoldingYears(int year) {
+		if (year < 1) {
+			throw new IllegalArgumentException("Driver must hold driving licence at least for one year. Can not rent a car!");
+		}
+		return true;
+	}
 }
